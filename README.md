@@ -11,13 +11,12 @@ A simple go map wrapper with iterator.
     m := gomap.New[string, int]()
 	
     m.Set("one", 1)
-	m.Set("two", 2)
+    m.Set("two", 2)
 	
     it := m.Iterator()
-	for it.Next() {
-		fmt.Println(it.Key(), it.Value())
-	}
-
+    for it.Next() {
+	print(it.Key(), ": ", it.Value())
+    }
  }
  ```
 
