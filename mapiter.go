@@ -1,31 +1,31 @@
 package gomap
 
 type mapIterItem[K comparable, V any] struct {
-	Next    bool
-	MapItem struct {
+	next    bool
+	mapItem struct {
 		Key   K
 		Value V
 	}
 }
 
 type mapIter[K comparable, V any] struct {
-	Ch      chan mapIterItem[K, V]
-	MapItem struct {
+	ch      chan mapIterItem[K, V]
+	mapItem struct {
 		Key   K
 		Value V
 	}
 }
 
 func (it *mapIter[K, V]) Next() bool {
-	n := <-it.Ch
-	it.MapItem = n.MapItem
-	return n.Next
+	n := <-it.ch
+	it.mapItem = n.mapItem
+	return n.next
 }
 
 func (it *mapIter[K, V]) Value() V {
-	return it.MapItem.Value
+	return it.mapItem.Value
 }
 
 func (it *mapIter[K, V]) Key() K {
-	return it.MapItem.Key
+	return it.mapItem.Key
 }

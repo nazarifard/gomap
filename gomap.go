@@ -19,20 +19,26 @@ func (m Map[K, V]) Len() int {
 	return len(m)
 }
 
+// type MapIterator[K comparable, V any] interface {
+// 	Next() bool
+// 	Value() V
+// 	Key() K
+// }
+
 func (m Map[K, V]) Iterator() *mapIter[K, V] {
 	it := mapIter[K, V]{
-		Ch: make(chan mapIterItem[K, V]),
+		ch: make(chan mapIterItem[K, V]),
 	}
 	go func() {
-		defer close(it.Ch)
+		defer close(it.ch)
 		for k, v := range m {
-			it.Ch <- mapIterItem[K, V]{true, struct {
+			it.ch <- mapIterItem[K, V]{true, struct {
 				Key   K
 				Value V
 			}{Key: k, Value: v}}
 		}
 
-		it.Ch <- mapIterItem[K, V]{false, struct {
+		it.ch <- mapIterItem[K, V]{false, struct {
 			Key   K
 			Value V
 		}{}}
