@@ -15,13 +15,11 @@ func TestPrint(t *testing.T) {
 	m.Set("three", 3)
 	m.Set("two", -2)
 
-	it := m.Iterator()
-	fmt.Printf("Result: %T{", m)
-	for it.Next() {
-		fmt.Printf("\"%+v\": %+v, ", it.Key(), it.Value())
-	}
-	fmt.Println("}")
+	m.Range(func(key string, value int) bool {
+		print("{", key, ":", value, "}, ")
+		return true
+	})
 
-	fmt.Print("Actual: ")
+	fmt.Printf("\nActual: ")
 	litter.Dump(m)
 }

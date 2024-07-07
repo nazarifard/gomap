@@ -1,5 +1,5 @@
 ## GoMap
-A simple go map wrapper with iterator.
+A simple go map wrapper with range iterator.
 
 # Example
 ```go
@@ -10,11 +10,10 @@ A simple go map wrapper with iterator.
 	
     m.Set("one", 1)
     m.Set("two", 2)
-	
-    it := m.Iterator()
-    for it.Next() {
-	print(it.Key(), ": ", it.Value())
-    }
+	m.Range(func(key string, value int) bool {
+		print("{", key, ":", value, "}, ")
+		return true
+	})
  }
  ```
 
