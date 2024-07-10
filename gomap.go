@@ -10,6 +10,10 @@ func (m Map[K, V]) Set(key K, value V) {
 	m[key] = value
 }
 
+func (m Map[K, V]) Update(key K, fn func(V) V) {
+	m[key] = fn(m[key]) //old:=m[key]
+}
+
 func (m Map[K, V]) Get(key K) (value V, ok bool) {
 	value, ok = m[key]
 	return
@@ -26,6 +30,10 @@ func (m Map[K, V]) Range(operationFn func(key K, value V) bool) {
 			break
 		}
 	}
+}
+
+func (m Map[K, V]) Delete(key K) {
+	delete(m, key)
 }
 
 // type MapIterator[K comparable, V any] interface {
