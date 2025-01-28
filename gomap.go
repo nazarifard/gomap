@@ -1,5 +1,9 @@
 package gomap
 
+import (
+	"iter"
+)
+
 type Map[K comparable, V any] map[K]V
 
 func New[K comparable, V any]() Map[K, V] {
@@ -36,29 +40,12 @@ func (m Map[K, V]) Delete(key K) {
 	delete(m, key)
 }
 
-// type MapIterator[K comparable, V any] interface {
-// 	Next() bool
-// 	Value() V
-// 	Key() K
-// }
-
-// func (m Map[K, V]) Iterator() *mapIter[K, V] {
-// 	it := mapIter[K, V]{
-// 		ch: make(chan mapIterItem[K, V]),
-// 	}
-// 	go func() {
-// 		defer close(it.ch)
-// 		for k, v := range m {
-// 			it.ch <- mapIterItem[K, V]{true, struct {
-// 				Key   K
-// 				Value V
-// 			}{Key: k, Value: v}}
-// 		}
-
-// 		it.ch <- mapIterItem[K, V]{false, struct {
-// 			Key   K
-// 			Value V
-// 		}{}}
-// 	}()
-// 	return &it
-// }
+func (m Map[K, V]) All() iter.Seq2[K, V] {
+	return func(yield func(K, V) bool) {
+		for k, v := range m {
+			if !yield(k, v) {
+				break
+			}
+		}
+	}
+}
