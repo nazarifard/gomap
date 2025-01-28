@@ -6,8 +6,11 @@ import (
 
 type Map[K comparable, V any] map[K]V
 
-func New[K comparable, V any]() Map[K, V] {
-	return make(map[K]V)
+func New[K comparable, V any](hintSize ...int) Map[K, V] {
+	if len(hintSize) == 0 {
+		return make(map[K]V)
+	}
+	return make(map[K]V, hintSize[0])
 }
 
 func (m Map[K, V]) Set(key K, value V) {
@@ -42,10 +45,6 @@ func (m Map[K, V]) Delete(key K) {
 
 func (m Map[K, V]) All() iter.Seq2[K, V] {
 	return func(yield func(K, V) bool) {
-		for k, v := range m {
-			if !yield(k, v) {
-				break
-			}
-		}
+		m.Range(yield)
 	}
 }
