@@ -14,7 +14,7 @@ func TestGoMap(t *testing.T) {
 	m.Set("three", 3)
 	m.Set("two", -2)
 
-	for key, value := range m.All() {
+	for key, value := range m.Seq {
 		t.Log("{", key, ":", value, "}, ")
 	}
 	t.Log("\nlitter.Dumpump:", litter.Sdump(m), "\n") //Dump(m)
